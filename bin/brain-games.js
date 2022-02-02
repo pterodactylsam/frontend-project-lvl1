@@ -1,5 +1,9 @@
 #!/usr/bin/env node
-import personName from '../src/cli.js';
+import inquireName from '../src/cli.js';
 
-console.log('Welcome to the Brain Games!');
-personName();
+const welcomeGame = () => {
+  console.log('Welcome to the Brain Games!');
+  inquireName();
+};
+
+welcomeGame();
