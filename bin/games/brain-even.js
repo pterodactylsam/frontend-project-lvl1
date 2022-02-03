@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import readlineSync from 'readline-sync';
-import inquireName, { userName } from '../src/cli.js'; // импорт имени пользователя из cli.js
+import inquireName, { userName } from '../../src/cli.js'; // импорт имени пользователя из cli.js
 
 let result = 'Correct';
 
