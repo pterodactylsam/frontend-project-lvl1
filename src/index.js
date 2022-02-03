@@ -13,6 +13,10 @@ export const instructionGameGcd = () => {
   console.log('Find the greatest common divisor of given numbers.');
 };
 
+export const instructionGameProg = () => {
+  console.log('What number is missing in the progression?');
+};
+
 export const generateRandomNumber = () => {
   const maxRandomNumber = 20;
   const avoidZero = 1; // избежать 0 при рандоме
