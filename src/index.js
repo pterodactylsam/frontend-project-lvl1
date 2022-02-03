@@ -9,8 +9,12 @@ export const instructionGameCalc = () => {
   console.log('What is the result of the expression?');
 };
 
+export const instructionGameGcd = () => {
+  console.log('Find the greatest common divisor of given numbers.');
+};
+
 export const generateRandomNumber = () => {
-  const maxRandomNumber = 10;
+  const maxRandomNumber = 20;
   const avoidZero = 1; // избежать 0 при рандоме
   const randomNumber = Math.floor(Math.random() * maxRandomNumber) + avoidZero;
 
