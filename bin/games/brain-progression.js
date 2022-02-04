@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 import readlineSync from 'readline-sync';
-import { userName } from '../src/cli.js'; // импорт имени пользователя из cli.js
+import { userName } from '../../src/cli.js'; // импорт имени пользователя из cli.js
 import {
   beginGame,
   instructionGameProg,
   congratulations,
-} from '../src/index.js';
+} from '../../src/index.js';
 
 let result = 'Correct';
 
