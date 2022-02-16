@@ -1,34 +1,28 @@
+import readlineSync from 'readline-sync';
 import inquireName, { userName } from './cli.js';
+
+const rounds = 3;
 
 export const beginGame = () => {
   console.log('Welcome to the Brain Games!');
   inquireName();
 };
 
-export const instructionGameCalc = () => {
-  console.log('What is the result of the expression?');
+const startGame = (instructionGame, generationRound) => {
+  console.log(instructionGame);
+  for (let i = 0; i < rounds; i += 1) {
+    console.log(generationRound[0]);
+    const answer = readlineSync.question('Your answer: ');
+    if (answer === generationRound[1]) {
+      console.log('Correct!');
+    } else {
+      console.log(
+        `'${answer}' is wrong answer ;(. Correct answer was '${generationRound[1]}'.`,
+      );
+      console.log(`Let's try again, ${userName}!`);
+      break;
+    }
+  }
 };
 
-export const instructionGameGcd = () => {
-  console.log('Find the greatest common divisor of given numbers.');
-};
-
-export const instructionGamePrime = () => {
-  console.log('Find the greatest common divisor of given numbers.');
-};
-
-export const instructionGameProg = () => {
-  console.log('What number is missing in the progression?');
-};
-
-export const generateRandomNumber = () => {
-  const maxRandomNumber = 20;
-  const avoidZero = 1; // избежать 0 при рандоме
-  const randomNumber = Math.floor(Math.random() * maxRandomNumber) + avoidZero;
-
-  return randomNumber;
-};
-
-export const congratulations = () => {
-  console.log(`Congratulations, ${userName}!`);
-};
+export default startGame;
