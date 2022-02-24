@@ -1,55 +1,38 @@
-#!/usr/bin/env node
-import readlineSync from 'readline-sync';
-import { userName } from '../cli.js'; // импорт имени пользователя из cli.js
-import {
-  beginGame,
-  generateRandomNumber,
-  instructionGameCalc,
-  congratulations,
-} from '../index.js';
+import startGame, { rounds } from '../index.js';
+import generateRandomNumber from '../utils.js';
 
-let result = 'Correct';
-
-const calcNumbers = () => {
-  const avoidZero = 1; // избежать 0 при рандоме
-  const randomOperator = Math.floor(Math.random() * 3) + avoidZero; // случайное число от 1 до 3
-  const randomNumber1 = generateRandomNumber();
-  const randomNumber2 = generateRandomNumber();
-  let resultAnswer; // сохранить правильный ответ на вопрос
-
-  if (randomOperator === 1) {
-    resultAnswer = randomNumber1 + randomNumber2;
-    console.log(`Question: ${randomNumber1} + ${randomNumber2}`);
-  } else if (randomOperator === 2) {
-    resultAnswer = randomNumber1 - randomNumber2;
-    console.log(`Question: ${randomNumber1} - ${randomNumber2}`);
-  } else {
-    resultAnswer = randomNumber1 * randomNumber2;
-    console.log(`Question: ${randomNumber1} * ${randomNumber2}`);
-  }
-
-  const answer = readlineSync.question('Your answer: ');
-
-  if (resultAnswer === Number(answer)) {
-    console.log('Correct!');
-  } else {
-    console.log(
-      `'${answer}' is wrong answer ;(. Correct answer was '${resultAnswer}'.`,
-    );
-    console.log(`Let's try again, ${userName}!`);
-    result = 'Wrong';
+const calculate = (num1, num2, randomOperator) => {
+  switch (randomOperator) {
+    case '+':
+      return num1 + num2;
+    case '-':
+      return num1 - num2;
+    case '*':
+      return num1 * num2;
+    default:
+      return num1 + num2;
   }
 };
 
-beginGame(); // приветствие и спрашиваем имя
-instructionGameCalc(); // инструкция для игры калькулятор
+const calcNumbers = () => {
+  const operators = ['+', '-', '*'];
+  const randomOperator = operators[generateRandomNumber(0, operators.length - 1)];
 
-for (let i = 0; i < 3; i += 1) {
-  if (result === 'Correct') {
-    calcNumbers();
+  const num1 = generateRandomNumber(1, 10);
+  const num2 = generateRandomNumber(1, 10);
+
+  const question = `${num1} ${randomOperator} ${num2}`;
+  const result = String(calculate(num1, num2, randomOperator));
+
+  return [question, result];
+};
+
+const generateRound = () => {
+  const arrayRounds = [];
+  for (let i = 0; i < rounds; i += 1) {
+    arrayRounds.push(calcNumbers());
   }
-}
+  return arrayRounds;
+};
 
-if (result === 'Correct') {
-  congratulations();
-}
+startGame('What is the result of the expression?', generateRound());
