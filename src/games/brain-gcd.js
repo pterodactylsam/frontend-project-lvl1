@@ -1,52 +1,29 @@
-#!/usr/bin/env node
-import readlineSync from 'readline-sync';
-import { userName } from '../../src/cli.js'; // импорт имени пользователя из cli.js
-import {
-  beginGame,
-  generateRandomNumber,
-  instructionGameGcd,
-  congratulations,
-} from '../../src/index.js';
+import startGame, { rounds } from '../index.js';
+import generateRandomNumber from '../utils.js';
 
-let result = 'Correct';
+const gameInstruction = 'Find the greatest common divisor of given numbers.';
 
-const calcGcdNumber = () => {
-  let randomNumber1 = generateRandomNumber();
-  let randomNumber2 = generateRandomNumber();
-
-  console.log(`Question: ${randomNumber1} ${randomNumber2}`);
-
-  while (randomNumber1 !== randomNumber2) {
-    if (randomNumber1 > randomNumber2) {
-      randomNumber1 -= randomNumber2;
-    } else {
-      randomNumber2 -= randomNumber1;
-    }
-  }
-
-  const resultAnswer = randomNumber1; // сохраняем нод в переменную
-  const answer = readlineSync.question('Your answer: ');
-  if (resultAnswer === Number(answer)) {
-    console.log('Correct!');
-  } else {
-    console.log(
-      `'${answer}' is wrong answer ;(. Correct answer was '${resultAnswer}'.`,
-    );
-    console.log(`Let's try again, ${userName}!`);
-    result = 'Wrong';
-  }
+const calculate = (num1, num2) => {
+  if (num2 > num1) return calculate(num2, num1);
+  if (!num2) return num1;
+  return calculate(num2, num1 % num2);
 };
 
-beginGame(); // приветствие и спрашиваем имя
-instructionGameGcd(); // инструкция для игры калькулятор
-calcGcdNumber();
+const generateRound = () => {
+  const num1 = generateRandomNumber(1, 50);
+  const num2 = generateRandomNumber(1, 50);
+  const question = `Question: ${num1} ${num2}`;
+  const result = String(calculate(num1, num2));
 
-for (let i = 0; i < 2; i += 1) { // 2 повтора, в функции calcGcdNumber при запуске считается нод
-  if (result === 'Correct') {
-    calcGcdNumber();
+  return [question, result];
+};
+
+const generateRounds = () => {
+  const gameRounds = [];
+  for (let i = 0; i < rounds; i += 1) {
+    gameRounds.push(generateRound());
   }
-}
+  return gameRounds;
+};
 
-if (result === 'Correct') {
-  congratulations();
-}
+startGame(gameInstruction, generateRounds());
