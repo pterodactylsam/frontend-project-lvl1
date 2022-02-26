@@ -1,22 +1,25 @@
-import startGame, { rounds } from '../index.js';
-import generateRandomNumber from '../utils.js';
+import startGame, { rounds } from "../index.js";
+import generateRandomNumber from "../utils.js";
+
+const operators = ["+", "-", "*"];
+const gameInstruction = "What is the result of the expression?"
 
 const calculate = (num1, num2, randomOperator) => {
   switch (randomOperator) {
-    case '+':
+    case "+":
       return num1 + num2;
-    case '-':
+    case "-":
       return num1 - num2;
-    case '*':
+    case "*":
       return num1 * num2;
     default:
-      return num1 + num2;
+      throw new Error("Unsupported operator");
   }
 };
 
-const calcNumbers = () => {
-  const operators = ['+', '-', '*'];
-  const randomOperator = operators[generateRandomNumber(0, operators.length - 1)];
+const generateRound = () => {
+  const randomOperator =
+    operators[generateRandomNumber(0, operators.length - 1)];
 
   const num1 = generateRandomNumber(1, 10);
   const num2 = generateRandomNumber(1, 10);
@@ -27,12 +30,12 @@ const calcNumbers = () => {
   return [question, result];
 };
 
-const generateRound = () => {
-  const arrayRounds = [];
+const generateRounds = () => {
+  const round = [];
   for (let i = 0; i < rounds; i += 1) {
-    arrayRounds.push(calcNumbers());
+    round.push(generateRound());
   }
-  return arrayRounds;
+  return round;
 };
 
-startGame('What is the result of the expression?', generateRound());
+startGame(gameInstruction, generateRounds());
