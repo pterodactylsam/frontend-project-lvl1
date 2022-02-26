@@ -1,65 +1,31 @@
-#!/usr/bin/env node
-import readlineSync from 'readline-sync';
-import { userName } from '../cli.js'; // импорт имени пользователя из cli.js
-import {
-  beginGame,
-  generateRandomNumber,
-  instructionGamePrime,
-  congratulations,
-} from '../index.js';
+import startGame, { rounds } from '../index.js';
+import generateRandomNumber from '../utils.js';
 
-let result = 'Correct';
+const gameInstruction = 'Answer "yes" if given number is prime. Otherwise answer "no".';
 
-const calcPrideNumber = () => {
-  const randomNumber = generateRandomNumber();
-  let textResult = '';
-  let prideNumber;
-
-  if (randomNumber === 1) {
-    prideNumber = randomNumber;
-    textResult = 'no';
-  } else if (randomNumber > 1) {
-    for (let i = 2; i < randomNumber; i += 1) {
-      if (randomNumber % i === 0) {
-        prideNumber = randomNumber;
-        textResult = 'no';
-        break;
-      } else if (randomNumber % i !== 0) {
-        prideNumber = randomNumber;
-        textResult = 'yes';
-      }
+const calculate = (num) => {
+  for (let i = 2; i < num; i += 1) {
+    if (num % i === 0) {
+      return 'no';
     }
   }
-
-  if (prideNumber === undefined) { // у меня почему-то иногда выскакивает undefiend :(
-    prideNumber = 5;
-    textResult = 'yes';
-  }
-
-  console.log(`Question: ${prideNumber}`);
-  const answer = readlineSync.question('Your answer: ');
-  if (textResult === answer) {
-    console.log('Correct');
-  } else {
-    console.log(
-      `'${answer}' is wrong answer ;(. Correct answer was ${textResult}.`,
-    );
-    console.log(`Let's try again, ${userName}!`);
-    result = 'Wrong';
-  }
+  return 'yes';
 };
 
-beginGame(); // приветствие и спрашиваем имя
-instructionGamePrime(); // инструкция для игры прогрессия
-calcPrideNumber();
+const generateRound = () => {
+  const num = generateRandomNumber(1, 10);
+  const question = `Question: ${num}`;
+  const result = calculate(num);
 
-for (let i = 0; i < 2; i += 1) {
-  // 2 повтора, в функции calcPrideNumber при запуске считается нод
-  if (result === 'Correct') {
-    calcPrideNumber();
+  return [question, result];
+};
+
+const generateRounds = () => {
+  const gameRounds = [];
+  for (let i = 0; i < rounds; i += 1) {
+    gameRounds.push(generateRound());
   }
-}
+  return gameRounds;
+};
 
-if (result === 'Correct') {
-  congratulations();
-}
+startGame(gameInstruction, generateRounds());
