@@ -1,60 +1,33 @@
-#!/usr/bin/env node
-import readlineSync from 'readline-sync';
-import { userName } from '../../src/cli.js'; // импорт имени пользователя из cli.js
-import {
-  beginGame,
-  instructionGameProg,
-  congratulations,
-} from '../../src/index.js';
+import startGame, { rounds } from '../index.js';
+import generateRandomNumber from '../utils.js';
 
-let result = 'Correct';
+const gameInstruction = 'What number is missing in the progression?';
 
-const calcProgNumber = () => {
+const generateRound = () => {
+  const randomLengthCount = generateRandomNumber(12, 25);
+  const randomIterationCount = generateRandomNumber(1, 3);
   const numbersProg = [];
-
-  const maxIterationCount = 5;
-  const avoidZero = 1; // избежать 0 при рандоме
-  const randomIterationCount = Math.floor(Math.random() * maxIterationCount) + avoidZero;
-
-  const maxLengthArray = 30;
-  const minimumLengthArray = 25; // минимум длина массива 5 элементов
-  const randomLengthCount = Math.floor(Math.random() * maxLengthArray) + minimumLengthArray;
 
   for (let i = 0; i < randomLengthCount; i += randomIterationCount) {
     numbersProg.push(i);
   }
 
-  const maxRandomNumber = numbersProg.length;
-  const randomElement = Math.floor(Math.random() * maxRandomNumber);
+  const randomElement = generateRandomNumber(0, numbersProg.length);
   const basicElement = numbersProg[randomElement];
   numbersProg[randomElement] = '..';
 
-  const textNumbersProg = numbersProg.join(' ');
-  console.log(`Question: ${textNumbersProg}`);
-  const answer = readlineSync.question('Your answer: ');
+  const question = `Question: ${numbersProg}`;
+  const result = String(basicElement);
 
-  if (basicElement === Number(answer)) {
-    console.log('Correct!');
-  } else {
-    console.log(
-      `'${answer}' is wrong answer ;(. Correct answer was '${basicElement}'.`,
-    );
-    console.log(`Let's try again, ${userName}!`);
-    result = 'Wrong';
-  }
+  return [question, result];
 };
 
-beginGame(); // приветствие и спрашиваем имя
-instructionGameProg(); // инструкция для игры прогрессия
-calcProgNumber();
-
-for (let i = 0; i < 2; i += 1) {
-  // 2 повтора, в функции calcGcdNumber при запуске считается нод
-  if (result === 'Correct') {
-    calcProgNumber();
+const generateRounds = () => {
+  const gameRounds = [];
+  for (let i = 0; i < rounds; i += 1) {
+    gameRounds.push(generateRound());
   }
-}
+  return gameRounds;
+};
 
-if (result === 'Correct') {
-  congratulations();
-}
+startGame(gameInstruction, generateRounds());
