@@ -3,7 +3,7 @@ import generateRandomNumber from '../utils.js';
 
 const gameInstruction = 'Answer "yes" if given number is prime. Otherwise answer "no".';
 
-const calculate = (num) => {
+const calculatePrime = (num) => {
   for (let i = 2; i < num; i += 1) {
     if (num % i === 0) {
       return 'no';
@@ -15,17 +15,17 @@ const calculate = (num) => {
 const generateRound = () => {
   const num = generateRandomNumber(1, 10);
   const question = `Question: ${num}`;
-  const result = calculate(num);
+  const answer = calculatePrime(num);
 
-  return [question, result];
+  return [question, answer];
 };
 
-const generateRounds = () => {
+const startPrimeGame = () => {
   const gameRounds = [];
   for (let i = 0; i < rounds; i += 1) {
     gameRounds.push(generateRound());
   }
-  return gameRounds;
+  return startGame(gameInstruction, gameRounds);
 };
 
-startGame(gameInstruction, generateRounds());
+export default startPrimeGame;

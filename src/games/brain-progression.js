@@ -3,31 +3,38 @@ import generateRandomNumber from '../utils.js';
 
 const gameInstruction = 'What number is missing in the progression?';
 
-const generateRound = () => {
-  const randomLengthCount = generateRandomNumber(12, 25);
-  const randomIterationCount = generateRandomNumber(1, 3);
+const generateProg = (randomStartNum, randomLengthCount, randomIterationCount) => {
   const numbersProg = [];
 
-  for (let i = 0; i < randomLengthCount; i += randomIterationCount) {
+  for (let i = randomStartNum; i < randomLengthCount; i += randomIterationCount) {
     numbersProg.push(i);
   }
 
-  const randomElement = generateRandomNumber(0, numbersProg.length);
-  const basicElement = numbersProg[randomElement];
-  numbersProg[randomElement] = '..';
-
-  const question = `Question: ${numbersProg}`;
-  const result = String(basicElement);
-
-  return [question, result];
+  return numbersProg;
 };
 
-const generateRounds = () => {
+const generateRound = () => {
+  const randomStartNum = generateRandomNumber(0, 5);
+  const randomLengthCount = generateRandomNumber(12, 25);
+  const randomIterationCount = generateRandomNumber(1, 3);
+
+  const prog = generateProg(randomStartNum, randomLengthCount, randomIterationCount);
+  const randomElement = generateRandomNumber(0, prog.length);
+  const basicElement = prog[randomElement];
+  prog[randomElement] = '..';
+
+  const question = `Question: ${prog}`;
+  const answer = String(basicElement);
+
+  return [question, answer];
+};
+
+const startProgGame = () => {
   const gameRounds = [];
   for (let i = 0; i < rounds; i += 1) {
     gameRounds.push(generateRound());
   }
-  return gameRounds;
+  return startGame(gameInstruction, gameRounds);
 };
 
-startGame(gameInstruction, generateRounds());
+export default startProgGame;

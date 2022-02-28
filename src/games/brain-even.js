@@ -3,7 +3,7 @@ import generateRandomNumber from '../utils.js';
 
 const gameInstruction = 'Answer "yes" if the number is even, otherwise answer "no".';
 
-const calculate = (num) => {
+const calculateEven = (num) => {
   if (num % 2 === 0) {
     return 'yes';
   }
@@ -13,17 +13,17 @@ const calculate = (num) => {
 const generateRound = () => {
   const num = generateRandomNumber(1, 10);
   const question = `Question: ${num}`;
-  const result = calculate(num);
+  const answer = calculateEven(num);
 
-  return [question, result];
+  return [question, answer];
 };
 
-const generateRounds = () => {
+const startEvenGame = () => {
   const gameRounds = [];
   for (let i = 0; i < rounds; i += 1) {
     gameRounds.push(generateRound());
   }
-  return gameRounds;
+  return startGame(gameInstruction, gameRounds);
 };
 
-startGame(gameInstruction, generateRounds());
+export default startEvenGame;

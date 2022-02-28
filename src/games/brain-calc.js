@@ -24,17 +24,17 @@ const generateRound = () => {
   const num2 = generateRandomNumber(1, 10);
 
   const question = `${num1} ${randomOperator} ${num2}`;
-  const result = String(calculate(num1, num2, randomOperator));
+  const answer = String(calculate(num1, num2, randomOperator));
 
-  return [question, result];
+  return [question, answer];
 };
 
-const generateRounds = () => {
+const startCalcGame = () => {
   const gameRounds = [];
   for (let i = 0; i < rounds; i += 1) {
     gameRounds.push(generateRound());
   }
-  return gameRounds;
+  return startGame(gameInstruction, gameRounds);
 };
 
-startGame(gameInstruction, generateRounds());
+export default startCalcGame;
