@@ -23,7 +23,7 @@ const generateRound = () => {
   const basicElement = progression[randomElement];
   progression[randomElement] = '..';
 
-  const question = `Question: ${progression}`;
+  const question = `Question: ${progression.join(' ')}`;
   const answer = String(basicElement);
 
   return [question, answer];
