@@ -23,7 +23,7 @@ const generateRound = () => {
   const num1 = generateRandomNumber(1, 10);
   const num2 = generateRandomNumber(1, 10);
 
-  const question = `${num1} ${randomOperator} ${num2}`;
+  const question = `Question: ${num1} ${randomOperator} ${num2}`;
   const answer = String(calculate(num1, num2, randomOperator));
 
   return [question, answer];
