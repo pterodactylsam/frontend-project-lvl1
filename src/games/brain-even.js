@@ -3,17 +3,17 @@ import generateRandomNumber from '../utils.js';
 
 const gameInstruction = 'Answer "yes" if the number is even, otherwise answer "no".';
 
-const calculateEven = (num) => {
+const isEven = (num) => {
   if (num % 2 === 0) {
-    return 'yes';
+    return true;
   }
-  return 'no';
+  return false;
 };
 
 const generateRound = () => {
   const num = generateRandomNumber(1, 10);
   const question = `Question: ${num}`;
-  const answer = calculateEven(num);
+  const answer = isEven(num) ? 'yes' : 'no';
 
   return [question, answer];
 };

@@ -3,10 +3,10 @@ import generateRandomNumber from '../utils.js';
 
 const gameInstruction = 'What number is missing in the progression?';
 
-const generateProg = (randomStartNum, randomLengthCount, randomIterationCount) => {
+const generateProgression = (startNum, lengthCount, iterationCount) => {
   const numbersProg = [];
 
-  for (let i = randomStartNum; i < randomLengthCount; i += randomIterationCount) {
+  for (let i = startNum; i < lengthCount; i += iterationCount) {
     numbersProg.push(i);
   }
 
@@ -18,12 +18,12 @@ const generateRound = () => {
   const randomLengthCount = generateRandomNumber(12, 25);
   const randomIterationCount = generateRandomNumber(1, 3);
 
-  const prog = generateProg(randomStartNum, randomLengthCount, randomIterationCount);
-  const randomElement = generateRandomNumber(0, prog.length);
-  const basicElement = prog[randomElement];
-  prog[randomElement] = '..';
+  const progression = generateProgression(randomStartNum, randomLengthCount, randomIterationCount);
+  const randomElement = generateRandomNumber(0, progression.length);
+  const basicElement = progression[randomElement];
+  progression[randomElement] = '..';
 
-  const question = `Question: ${prog}`;
+  const question = `Question: ${progression}`;
   const answer = String(basicElement);
 
   return [question, answer];
